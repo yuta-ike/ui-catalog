@@ -4,24 +4,20 @@ import {
   Button,
   Divider,
   Group,
-  Input,
   Navbar,
   NumberInput,
   Popover,
-  Radio,
-  RadioGroup,
   SegmentedControl,
-  Select,
   Slider,
   Stack,
   Tabs,
   Tooltip,
-  Transition,
   Badge,
   Code,
 } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import type { NextPage } from "next"
+import Head from "next/head"
 import { useState } from "react"
 import { ArrowUpCircle, Edit, Trash, X } from "tabler-icons-react"
 
@@ -343,169 +339,175 @@ const Home: NextPage = () => {
   )
 
   return (
-    <AppShell
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-        },
-      })}
-      navbar={
-        <Navbar className="shrink-0 overflow-y-scroll p-4" width={{ base: 400 }} p="xs">
-          <Stack spacing="lg">
-            <h1 className="typo-h1">Flex Box</h1>
-            <div>
-              <h2 className="typo-h3">flex direction</h2>
-              <SegmentedControl
-                value={direction}
-                onChange={(e) => setDirection(e as typeof direction)}
-                data={[
-                  { label: "row", value: "row" },
-                  { label: "column", value: "column" },
-                  { label: "row-reverse", value: "row-reverse" },
-                  { label: "column-reverse", value: "column-reverse" },
-                ]}
-              />
-            </div>
-            <div>
-              <h2 className="typo-h3">align items</h2>
-              <SegmentedControl
-                value={alignItems}
-                onChange={(e) => setAlignItems(e as typeof alignItems)}
-                data={[
-                  { label: "flex-start", value: "flex-start" },
-                  { label: "center", value: "center" },
-                  { label: "flex-end", value: "flex-end" },
-                  { label: "stretch", value: "stretch" },
-                ]}
-              />
-            </div>
-            <div>
-              <h2 className="typo-h3">Jutify contents</h2>
-              <SegmentedControl
-                value={justifyContent}
-                onChange={(e) => setJustifyCntent(e as typeof justifyContent)}
-                className="flex-wrap"
-                data={[
-                  { label: "flex-start", value: "flex-start" },
-                  { label: "center", value: "center" },
-                  { label: "flex-end", value: "flex-end" },
-                  { label: "space-around", value: "space-around" },
-                  { label: "space-between", value: "space-between" },
-                  { label: "space-evenly", value: "space-evenly" },
-                  { label: "stretch", value: "stretch" },
-                ]}
-              />
-            </div>
-            <div>
-              <h2 className="typo-h3">Flex wrap</h2>
-              <SegmentedControl
-                value={wrap}
-                onChange={(e) => setWrap(e as typeof wrap)}
-                data={[
-                  { label: "nowrap", value: "nowrap" },
-                  { label: "wrap", value: "wrap" },
-                  { label: "wrap-reverse", value: "wrap-reverse" },
-                ]}
-              />
-            </div>
-            <Divider my="sm" />
-            <div>
-              <Group position="apart">
-                <h1 className="typo-h1">Flex Item</h1>
-                <Button color="blue" onClick={() => setItems((prev) => [...prev, DEFAULT_ITEM])}>
-                  Add flex item
-                </Button>
-              </Group>
-              <Tabs active={activeTab ?? 0} onTabChange={setActiveTab}>
-                {items.map((item, i) => (
-                  <Tabs.Tab label={`Item${i + 1}`} key={i}>
-                    <Stack spacing={0} align="flex-start">
-                      {ItemEdit(item, i)}
-                      <Button color="red" onClick={() => deleteItem(i)}>
-                        Delete this item
-                      </Button>
-                    </Stack>
-                  </Tabs.Tab>
-                ))}
-              </Tabs>
-            </div>
-          </Stack>
-        </Navbar>
-      }
-    >
-      <div className="flex h-full w-full">
-        <div
-          className="h-full max-h-screen max-w-[820px] grow rounded border border-gray-300 p-2"
-          style={{
-            display: "flex",
-            flexDirection: direction,
-            alignItems,
-            justifyContent,
-            flexWrap: wrap,
-          }}
-        >
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className="m-2 min-h-[100px] min-w-[100px] overflow-scroll rounded border border-blue-300 p-2 shadow transition-all"
-              style={{
-                width:
-                  item.width.type === "auto" ? "auto" : `${item.width.value}${item.width.type}`,
-                flexGrow: item.grow,
-                flexShrink: item.shrink,
-                flexBasis:
-                  item.basis.type === "auto" || item.basis.type === "content"
-                    ? item.basis.type
-                    : `${item.basis.value}${item.basis.type}`,
-                alignSelf: item.alignSelf,
-              }}
-            >
-              <Group>
-                <p style={{ width: "60px" }}>Item {i + 1}</p>
-                <Popover
-                  opened={activePopover === i}
-                  onClose={() => setActivePopover(null)}
-                  target={
-                    <ActionIcon onClick={() => setActivePopover(i)} size="xs">
-                      <Edit size="xs" />
-                    </ActionIcon>
-                  }
-                  position="bottom"
-                  withArrow
-                >
-                  {ItemEdit(item, i)}
-                </Popover>
-                <ActionIcon onClick={() => deleteItem(i)} size="xs">
-                  <Trash size="xs" />
-                </ActionIcon>
-              </Group>
-              <Code block style={{ lineHeight: 2 }}>
-                width:{" "}
-                <Badge styles={{ inner: { textTransform: "none" } }}>
-                  {item.width.value ?? ""} {item.width.type}
-                </Badge>
-                ;
-                <br />
-                flex-grow: <Badge styles={{ inner: { textTransform: "none" } }}>{item.grow}</Badge>;
-                <br />
-                flex-shrink:{" "}
-                <Badge styles={{ inner: { textTransform: "none" } }}>{item.shrink}</Badge>;
-                <br />
-                flex-basis:{" "}
-                <Badge styles={{ inner: { textTransform: "none" } }}>
-                  {item.basis.value ?? ""} {item.basis.type === "integer" ? "" : item.basis.type}
-                </Badge>
-                ;
-                <br />
-                align-self:{" "}
-                <Badge styles={{ inner: { textTransform: "none" } }}>{item.alignSelf}</Badge>;
-              </Code>
-            </div>
-          ))}
+    <>
+      <Head>
+        <title>FlexBox playground</title>
+      </Head>
+      <AppShell
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+          },
+        })}
+        navbar={
+          <Navbar className="shrink-0 overflow-y-scroll p-4" width={{ base: 400 }} p="xs">
+            <Stack spacing="lg">
+              <h1 className="typo-h1">Flex Box</h1>
+              <div>
+                <h2 className="typo-h3">flex direction</h2>
+                <SegmentedControl
+                  value={direction}
+                  onChange={(e) => setDirection(e as typeof direction)}
+                  data={[
+                    { label: "row", value: "row" },
+                    { label: "column", value: "column" },
+                    { label: "row-reverse", value: "row-reverse" },
+                    { label: "column-reverse", value: "column-reverse" },
+                  ]}
+                />
+              </div>
+              <div>
+                <h2 className="typo-h3">align items</h2>
+                <SegmentedControl
+                  value={alignItems}
+                  onChange={(e) => setAlignItems(e as typeof alignItems)}
+                  data={[
+                    { label: "flex-start", value: "flex-start" },
+                    { label: "center", value: "center" },
+                    { label: "flex-end", value: "flex-end" },
+                    { label: "stretch", value: "stretch" },
+                  ]}
+                />
+              </div>
+              <div>
+                <h2 className="typo-h3">Jutify contents</h2>
+                <SegmentedControl
+                  value={justifyContent}
+                  onChange={(e) => setJustifyCntent(e as typeof justifyContent)}
+                  className="flex-wrap"
+                  data={[
+                    { label: "flex-start", value: "flex-start" },
+                    { label: "center", value: "center" },
+                    { label: "flex-end", value: "flex-end" },
+                    { label: "space-around", value: "space-around" },
+                    { label: "space-between", value: "space-between" },
+                    { label: "space-evenly", value: "space-evenly" },
+                    { label: "stretch", value: "stretch" },
+                  ]}
+                />
+              </div>
+              <div>
+                <h2 className="typo-h3">Flex wrap</h2>
+                <SegmentedControl
+                  value={wrap}
+                  onChange={(e) => setWrap(e as typeof wrap)}
+                  data={[
+                    { label: "nowrap", value: "nowrap" },
+                    { label: "wrap", value: "wrap" },
+                    { label: "wrap-reverse", value: "wrap-reverse" },
+                  ]}
+                />
+              </div>
+              <Divider my="sm" />
+              <div>
+                <Group position="apart">
+                  <h1 className="typo-h1">Flex Item</h1>
+                  <Button color="blue" onClick={() => setItems((prev) => [...prev, DEFAULT_ITEM])}>
+                    Add flex item
+                  </Button>
+                </Group>
+                <Tabs active={activeTab ?? 0} onTabChange={setActiveTab}>
+                  {items.map((item, i) => (
+                    <Tabs.Tab label={`Item${i + 1}`} key={i}>
+                      <Stack spacing={0} align="flex-start">
+                        {ItemEdit(item, i)}
+                        <Button color="red" onClick={() => deleteItem(i)}>
+                          Delete this item
+                        </Button>
+                      </Stack>
+                    </Tabs.Tab>
+                  ))}
+                </Tabs>
+              </div>
+            </Stack>
+          </Navbar>
+        }
+      >
+        <div className="flex h-full w-full">
+          <div
+            className="h-full max-h-screen max-w-[820px] grow rounded border border-gray-300 p-2"
+            style={{
+              display: "flex",
+              flexDirection: direction,
+              alignItems,
+              justifyContent,
+              flexWrap: wrap,
+            }}
+          >
+            {items.map((item, i) => (
+              <div
+                key={i}
+                className="m-2 min-h-[100px] min-w-[100px] overflow-scroll rounded border border-blue-300 p-2 shadow transition-all"
+                style={{
+                  width:
+                    item.width.type === "auto" ? "auto" : `${item.width.value}${item.width.type}`,
+                  flexGrow: item.grow,
+                  flexShrink: item.shrink,
+                  flexBasis:
+                    item.basis.type === "auto" || item.basis.type === "content"
+                      ? item.basis.type
+                      : `${item.basis.value}${item.basis.type}`,
+                  alignSelf: item.alignSelf,
+                }}
+              >
+                <Group>
+                  <p style={{ width: "60px" }}>Item {i + 1}</p>
+                  <Popover
+                    opened={activePopover === i}
+                    onClose={() => setActivePopover(null)}
+                    target={
+                      <ActionIcon onClick={() => setActivePopover(i)} size="xs">
+                        <Edit size="xs" />
+                      </ActionIcon>
+                    }
+                    position="bottom"
+                    withArrow
+                  >
+                    {ItemEdit(item, i)}
+                  </Popover>
+                  <ActionIcon onClick={() => deleteItem(i)} size="xs">
+                    <Trash size="xs" />
+                  </ActionIcon>
+                </Group>
+                <Code block style={{ lineHeight: 2 }}>
+                  width:{" "}
+                  <Badge styles={{ inner: { textTransform: "none" } }}>
+                    {item.width.value ?? ""} {item.width.type}
+                  </Badge>
+                  ;
+                  <br />
+                  flex-grow:{" "}
+                  <Badge styles={{ inner: { textTransform: "none" } }}>{item.grow}</Badge>;
+                  <br />
+                  flex-shrink:{" "}
+                  <Badge styles={{ inner: { textTransform: "none" } }}>{item.shrink}</Badge>;
+                  <br />
+                  flex-basis:{" "}
+                  <Badge styles={{ inner: { textTransform: "none" } }}>
+                    {item.basis.value ?? ""} {item.basis.type === "integer" ? "" : item.basis.type}
+                  </Badge>
+                  ;
+                  <br />
+                  align-self:{" "}
+                  <Badge styles={{ inner: { textTransform: "none" } }}>{item.alignSelf}</Badge>;
+                </Code>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </AppShell>
+      </AppShell>
+    </>
   )
 }
 

@@ -480,7 +480,7 @@ const Home: NextPage = () => {
                     onClose={() => setActivePopover(null)}
                     target={
                       <ActionIcon onClick={() => setActivePopover(i)} size="xs">
-                        <Edit size="xs" />
+                        <Edit />
                       </ActionIcon>
                     }
                     position="bottom"
@@ -490,7 +490,7 @@ const Home: NextPage = () => {
                     {ItemEdit(item, i)}
                   </Popover>
                   <ActionIcon onClick={() => deleteItem(i)} size="xs">
-                    <Trash size="xs" />
+                    <Trash />
                   </ActionIcon>
                 </Group>
                 <Code block style={{ lineHeight: 2 }} mt="sm">

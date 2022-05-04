@@ -20,6 +20,7 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import { useState } from "react"
 import { ArrowUpCircle, Edit, Trash, X } from "tabler-icons-react"
+import { APP_URL } from "../../constant"
 
 const DEFAULT_ITEM: Item = {
   width: { type: "px" as const, value: 200 },
@@ -54,7 +55,7 @@ type Item = {
 }
 
 const ApplyAllButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <Tooltip label="apply all flex items" transition="fade">
+  <Tooltip label="apply to all flex items" transition="fade">
     <ActionIcon onClick={onClick} size="xs" color="#a5a5a5">
       <ArrowUpCircle />
     </ActionIcon>
@@ -342,6 +343,17 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>FlexBox playground</title>
+        <meta property="og:url" content={APP_URL + "/flexbox-playground"} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="FlexBox playground" />
+        <meta
+          property="og:description"
+          content="Flexbox playground | Check the behavior of Flexbox layout with GUI"
+        />
+        <meta property="og:site_name" content="Flexbox playground" />
+        <meta property="og:image" content={APP_URL + "/ogp/flexbox-playground.png"} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Selria1" />
       </Head>
       <AppShell
         styles={(theme) => ({
@@ -473,6 +485,7 @@ const Home: NextPage = () => {
                     }
                     position="bottom"
                     withArrow
+                    // trapFocus={false}
                   >
                     {ItemEdit(item, i)}
                   </Popover>

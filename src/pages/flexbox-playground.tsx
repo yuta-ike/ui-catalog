@@ -448,7 +448,7 @@ const Home: NextPage = () => {
             {items.map((item, i) => (
               <div
                 key={i}
-                className="m-2 min-h-[100px] min-w-[100px] overflow-scroll rounded border border-blue-300 p-2 shadow transition-all"
+                className="m-2 min-h-[100px] min-w-[100px] overflow-scroll rounded border border-blue-300 bg-white p-2 shadow transition-all"
                 style={{
                   width:
                     item.width.type === "auto" ? "auto" : `${item.width.value}${item.width.type}`,
@@ -480,7 +480,7 @@ const Home: NextPage = () => {
                     <Trash size="xs" />
                   </ActionIcon>
                 </Group>
-                <Code block style={{ lineHeight: 2 }}>
+                <Code block style={{ lineHeight: 2 }} mt="sm">
                   width:{" "}
                   <Badge styles={{ inner: { textTransform: "none" } }}>
                     {item.width.value ?? ""} {item.width.type}
